@@ -3,9 +3,6 @@ pipeline {
   options {
     skipDefaultCheckout(true)
   }
-  environment {
-    PATH = "$WORKSPACE/.bin:$PATH"
-  }
   stages{
     stage('clean workspace') {
       steps {
