@@ -24,12 +24,12 @@ pipeline {
     }
     stage('apply') {
       steps {
-        sh 'terraform apply'
+        sh 'terraform apply -auto-approve'
       }
     }
   }
   post {
-    apply {
+    always {
       cleanWs()
     }
   }
