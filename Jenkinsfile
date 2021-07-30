@@ -4,6 +4,7 @@ pipeline {
     skipDefaultCheckout(true)
   }
   environment {
+    TF_VERSION = "1.0.0"
     PATH = "$WORKSPACE/.bin:$PATH"
   }
   stages{
