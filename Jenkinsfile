@@ -17,14 +17,9 @@ pipeline {
         checkout scm
       }
     }
-    stage('install terraform') {
+    stage('terraform') {
       steps {
-        sh './terraformw'
-      }
-    }
-    stage('apply') {
-      steps {
-        sh 'terraform apply -auto-approve'
+        sh './terraformw apply -auto-approve'
       }
     }
   }
