@@ -9,6 +9,6 @@ chmod 755 install.sh #Make installer executable
 
 CUSTOMBIN=$(pwd)/.bin            #set custom bin path
 
-export PATH=$PATH:$CUSTOMBIN    #Add custom bin path to PATH environment
+export PATH=$CUSTOMBIN:$PATH    #Add custom bin path to PATH environment
 
 $CUSTOMBIN/tfswitch -b $CUSTOMBIN/terraform
