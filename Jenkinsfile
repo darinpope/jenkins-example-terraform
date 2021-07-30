@@ -5,6 +5,7 @@ pipeline {
   }
   environment {
     TF_VERSION = "1.0.3"
+    PATH = "$(pwd)/.bin:$PATH"
   }
   stages{
     stage('clean workspace') {
