@@ -23,7 +23,7 @@ pipeline {
       }
       steps {
         sh '''
-          tfsec –no-color .
+          tfsec --help
         '''
       }
     }
