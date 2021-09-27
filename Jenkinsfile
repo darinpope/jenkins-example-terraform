@@ -26,7 +26,7 @@ pipeline {
             - cat
             tty: true
           - name: tfsec
-            image: tfsec/tfsec-ci:${props["tfsec.version"]}
+            image: tfsec/tfsec:${props["tfsec.version"]}
             command:
             - cat
             tty: true
@@ -56,7 +56,10 @@ pipeline {
     stage('tfsec') {
       steps {
         container('tfsec') {
-          sh 'tfsec . --no-color'
+          sh '''
+            tfsec -version
+            tfsec . --no-color
+          '''
         }
       }
     }
