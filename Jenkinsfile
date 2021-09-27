@@ -33,6 +33,11 @@ pipeline {
         '''
     }
   }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    disableConcurrentBuilds()
+  }
   stages{
     stage('plan') {
       steps {
