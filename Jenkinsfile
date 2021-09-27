@@ -39,6 +39,13 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages{
+    stage('init') {
+      steps {
+        container('terraform') {
+          sh 'terraform init -no-color'
+        }
+      }
+    }
     stage('plan') {
       steps {
         container('terraform') {
