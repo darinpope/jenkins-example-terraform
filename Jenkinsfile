@@ -21,7 +21,7 @@ pipeline {
         spec:
           containers:
           - name: terraform
-            image: terraform:${props["terraform.version"]}
+            image: hashicorp/terraform:${props["terraform.version"]}
             command:
             - cat
             tty: true
