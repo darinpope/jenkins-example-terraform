@@ -5,8 +5,12 @@ def d = [
 
 def props = [:]
 
-checkout scm
-props = readProperties(defaults: d, file: 'version.properties')
+podTemplate {
+  node(POD_LABEL) {
+    checkout scm
+    props = readProperties(defaults: d, file: 'version.properties')
+  }
+}
 
 pipeline {
   agent {
