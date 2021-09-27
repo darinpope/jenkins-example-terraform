@@ -5,12 +5,8 @@ def d = [
 
 def props = [:]
 
-node {
-  stage('Read parameters from version.properties'){
-    checkout scm
-    props = readProperties(defaults: d, file: 'version.properties')
-  }
-}
+checkout scm
+props = readProperties(defaults: d, file: 'version.properties')
 
 pipeline {
   agent {
