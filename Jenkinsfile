@@ -49,23 +49,21 @@ pipeline {
     stage('plan') {
       steps {
         container('terraform') {
-          sh 'terraform plan -no-color'
+          sh 'terraform plan -out=tfplan -no-color '
         }
       }
     }
     stage('tfsec') {
       steps {
         container('tfsec') {
-          sh '''
-            tfsec . --no-color
-          '''
+          sh 'tfsec . --no-color'
         }
       }
     }
     stage('apply') {
       steps {
         container('terraform') {
-          sh 'terraform apply -auto-approve -no-color'
+          sh 'terraform apply -auto-approve -no-color tfplan'
         }
       }
     }
