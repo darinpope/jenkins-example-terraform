@@ -34,6 +34,13 @@ pipeline {
     }
   }
   stages{
+    stage('plan') {
+      steps {
+        container('terraform') {
+          sh 'terraform plan -no-color'
+        }
+      }
+    }
     stage('tfsec') {
       steps {
         container('tfsec') {
@@ -43,7 +50,7 @@ pipeline {
         }
       }
     }
-    stage('terraform') {
+    stage('apply') {
       steps {
         container('terraform') {
           sh 'terraform apply -auto-approve -no-color'
