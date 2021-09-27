@@ -1,41 +1,54 @@
+def d = [
+  'terraform.version':'1.0.0',
+  'tfsec.version':'v0.57.1'
+]
+
+def props = [:]
+
+node {
+  stage('Read parameters from version.properties'){
+    checkout scm
+    props = readProperties(defaults: d, file: 'version.properties')
+  }
+}
+
 pipeline {
-  agent { label 'linux'}
-  options {
-    skipDefaultCheckout(true)
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: terraform
+            image: terraform:${props["terraform.version"]}
+            command:
+            - cat
+            tty: true
+          - name: tfsec
+            image: tfsec/tfsec-ci:${props["tfsec.version"]}
+            command:
+            - cat
+            tty: true
+        '''
+    }
   }
   stages{
-    stage('clean workspace') {
-      steps {
-        cleanWs()
-      }
-    }
-    stage('checkout') {
-      steps {
-        checkout scm
-      }
-    }
     stage('tfsec') {
-      agent {
-        docker { 
-          image 'tfsec/tfsec-ci:v0.57.1' 
-          reuseNode true
-        }
-      }
       steps {
-        sh '''
-          tfsec . --no-color
-        '''
+        container('tfsec') {
+          sh '''
+            tfsec . --no-color
+          '''
+        }
       }
     }
     stage('terraform') {
       steps {
-        sh './terraformw apply -auto-approve -no-color'
+        container('terraform') {
+          sh 'terraform apply -auto-approve -no-color'
+        }
       }
-    }
-  }
-  post {
-    always {
-      cleanWs()
     }
   }
 }
