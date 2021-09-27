@@ -15,7 +15,7 @@ podTemplate {
 pipeline {
   agent {
     kubernetes {
-      yaml '''
+      yaml """
         apiVersion: v1
         kind: Pod
         spec:
@@ -30,7 +30,7 @@ pipeline {
             command:
             - cat
             tty: true
-        '''
+        """
     }
   }
   options {
