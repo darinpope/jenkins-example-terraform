@@ -1,5 +1,6 @@
 def d = [
-  'terraform.version':'1.0.0'
+  'terraform.version':'1.0.0',
+  'terrascan.version':'1.10.0'
 ]
 
 def props = [:]
@@ -24,6 +25,11 @@ pipeline {
             command:
             - cat
             tty: true
+          - name: terrascan
+            image: accurics/terrascan:${props["terrascan.version"]}
+            command:
+            - cat
+            tty: true
         """
     }
   }
@@ -43,7 +49,17 @@ pipeline {
     stage('plan') {
       steps {
         container('terraform') {
-          sh 'terraform plan -out=tfplan -no-color '
+          sh 'terraform plan -out=tfplan -no-color'
+        }
+      }
+    }
+    stage('terrascan') {
+      steps {
+        container('terrascan') {
+          sh '''
+            terrascan init
+            terrascan scan
+          '''
         }
       }
     }
