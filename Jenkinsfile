@@ -59,8 +59,8 @@ pipeline {
       steps {
         container('terrascan') {
           sh '''
-            terrascan init
-            terrascan scan
+            terrascan init --config-path `pwd`
+            terrascan scan --config-path `pwd`
           '''
         }
       }
