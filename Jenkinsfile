@@ -78,7 +78,7 @@ pipeline {
       steps {
         container('tfsec') {
           sh '''
-            tfsec –version
+            tfsec --version
             tfsec . --no-color
           '''
         }
