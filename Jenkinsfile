@@ -1,6 +1,5 @@
 def d = [
-  'terraform.version':'1.0.0',
-  'tfsec.version':'v0.57.1'
+  'terraform.version':'1.0.0'
 ]
 
 def props = [:]
@@ -25,11 +24,6 @@ pipeline {
             command:
             - cat
             tty: true
-          - name: tfsec
-            image: tfsec/tfsec-ci:${props["tfsec.version"]}
-            command:
-            - cat
-            tty: true
         """
     }
   }
@@ -50,17 +44,6 @@ pipeline {
       steps {
         container('terraform') {
           sh 'terraform plan -out=tfplan -no-color '
-        }
-      }
-    }
-    stage('static analysis security scan') {
-      steps {
-        container('tfsec') {
-          sh '''
-            ls -last
-            tfsec -version
-            tfsec . --no-color
-          '''
         }
       }
     }
