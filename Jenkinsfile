@@ -53,7 +53,7 @@ pipeline {
         }
       }
     }
-    stage('tfsec') {
+    stage('static analysis security scan') {
       steps {
         container('tfsec') {
           sh '''
