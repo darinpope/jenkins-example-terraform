@@ -8,6 +8,7 @@ def props = [:]
 
 podTemplate {
   node(POD_LABEL) {
+    checkout scm
     props = readProperties(defaults: d, file: 'version.properties')
   }
 }
