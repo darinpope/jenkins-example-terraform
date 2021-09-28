@@ -50,7 +50,10 @@ pipeline {
     stage('init') {
       steps {
         container('terraform') {
-          sh 'terraform init -no-color'
+          sh '''
+            terraform version
+            terraform init -no-color
+          '''
         }
       }
     }
@@ -64,14 +67,20 @@ pipeline {
     stage('lint') {
       steps {
         container('tflint') {
-          sh 'tflint --init --no-color .'
+          sh '''
+            tflint --version
+            tflint --init --no-color .
+          '''
         }
       }
     }
-    stage('tfsec') {
+    stage('security scan') {
       steps {
         container('tfsec') {
-          sh 'tfsec . --no-color'
+          sh '''
+            tfsec –version
+            tfsec . --no-color
+          '''
         }
       }
     }
