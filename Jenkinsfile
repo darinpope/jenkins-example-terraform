@@ -26,7 +26,7 @@ pipeline {
             - cat
             tty: true
           - name: tfsec
-            image: tfsec/tfsec:${props["tfsec.version"]}
+            image: tfsec/tfsec-ci:${props["tfsec.version"]}
             command:
             - cat
             tty: true
