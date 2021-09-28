@@ -19,6 +19,8 @@ pipeline {
         apiVersion: v1
         kind: Pod
         spec:
+          securityContext:
+            runAsUser: 1000
           containers:
           - name: terraform
             image: hashicorp/terraform:${props["terraform.version"]}
