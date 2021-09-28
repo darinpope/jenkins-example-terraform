@@ -1,6 +1,6 @@
 def d = [
   'terraform.version':'1.0.0',
-  'terrascan.version':'1.10.0'
+  'tfsec.version':'v0.57.1'
 ]
 
 def props = [:]
@@ -27,8 +27,8 @@ pipeline {
             command:
             - cat
             tty: true
-          - name: terrascan
-            image: accurics/terrascan:${props["terrascan.version"]}
+          - name: tfsec
+            image: tfsec/tfsec-ci:${props["tfsec.version"]}
             command:
             - cat
             tty: true
@@ -55,13 +55,10 @@ pipeline {
         }
       }
     }
-    stage('terrascan') {
+    stage('tfsec') {
       steps {
-        container('terrascan') {
-          sh '''
-            terrascan init --config-path `pwd`
-            terrascan scan --config-path `pwd`
-          '''
+        container('tfsec') {
+          sh 'tfsec . --no-color'
         }
       }
     }
