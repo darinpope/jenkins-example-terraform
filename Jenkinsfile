@@ -1,6 +1,7 @@
 def d = [
   'terraform.version':'1.0.0',
-  'tfsec.version':'v0.57.1'
+  'tfsec.version':'v0.57.1',
+  'tflint.version':'v0.32.0'
 ]
 
 def props = [:]
@@ -32,6 +33,11 @@ pipeline {
             command:
             - cat
             tty: true
+          - name: tflint
+            image: ghcr.io/terraform-linters/tflint:${props["tflint.version"]}
+            command:
+            - cat
+            tty: true
         """
     }
   }
@@ -48,10 +54,17 @@ pipeline {
         }
       }
     }
-    stage('plan') {
+    stage('validate') {
       steps {
         container('terraform') {
-          sh 'terraform plan -out=tfplan -no-color'
+          sh 'terraform validate -no-color'
+        }
+      }
+    }
+    stage('lint') {
+      steps {
+        container('tflint') {
+          sh 'tflint --init --no-color .'
         }
       }
     }
@@ -59,6 +72,13 @@ pipeline {
       steps {
         container('tfsec') {
           sh 'tfsec . --no-color'
+        }
+      }
+    }
+    stage('plan') {
+      steps {
+        container('terraform') {
+          sh 'terraform plan -out=tfplan -no-color'
         }
       }
     }
